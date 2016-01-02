@@ -1,0 +1,18 @@
+<!ELEMENT query-context (findKeyword|entities|results-limit)*>
+<!ELEMENT findKeyword (#PCDATA)>
+<!ELEMENT results-limit (#PCDATA)>
+<!ELEMENT entities (entity)*>
+<!ELEMENT entity (attribute)*>
+<!ATTLIST entity
+        className CDATA #REQUIRED
+        displayName CDATA #REQUIRED
+        roles CDATA #IMPLIED>
+<!ELEMENT attribute (#PCDATA)>
+<!ATTLIST attribute
+        attributeName CDATA #REQUIRED
+        displayName CDATA #REQUIRED
+        possibleValueLabelAttribute CDATA #IMPLIED
+        possibleValueLabelAttributePath CDATA #IMPLIED
+        possibleValuesQuery CDATA #IMPLIED
+        roles CDATA #IMPLIED
+        displayOnly CDATA #IMPLIED>
