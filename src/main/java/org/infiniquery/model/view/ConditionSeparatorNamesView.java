@@ -30,24 +30,39 @@ package org.infiniquery.model.view;
  * Data transfer object encapsulating the information necessary on the user interface to display the available condition separators.
  *
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public class ConditionSeparatorNamesView {
 
     private String[] conditionSeparatorNames;
 
+    /**
+     * 
+     */
     public ConditionSeparatorNamesView() {
 
     }
 
+    /**
+     * 
+     * @param conditionSeparatorNames
+     */
     public ConditionSeparatorNamesView(String[] conditionSeparatorNames) {
         this.conditionSeparatorNames = conditionSeparatorNames;
     }
 
+    /**
+     * 
+     * @return conditionSeparatorNames an array of String
+     */
     public String[] getConditionSeparatorNames() {
         return conditionSeparatorNames;
     }
 
+    /**
+     * 
+     * @param conditionSeparatorNames an array of String
+     */
     public void setConditionSeparatorNames(String[] conditionSeparatorNames) {
         this.conditionSeparatorNames = conditionSeparatorNames;
     }

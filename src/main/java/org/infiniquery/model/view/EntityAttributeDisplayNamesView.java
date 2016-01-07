@@ -30,24 +30,39 @@ package org.infiniquery.model.view;
  * Data transfer object encapsulating the information necessary on the user interface side to display the available attributes of a particular entity.
  *
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public class EntityAttributeDisplayNamesView {
 
     private String[] atrributeDisplayNames;
 
+    /**
+     * 
+     */
     public EntityAttributeDisplayNamesView() {
 
     }
 
+    /**
+     * 
+     * @param atrributeDisplayNames
+     */
     public EntityAttributeDisplayNamesView(String[] atrributeDisplayNames) {
         this.atrributeDisplayNames = atrributeDisplayNames;
     }
 
+    /**
+     * 
+     * @return atrributeDisplayNames
+     */
     public String[] getEntityAttributeDisplayNames() {
         return atrributeDisplayNames;
     }
 
+    /**
+     * 
+     * @param attributeDisplayNames
+     */
     public void setAttributeDisplayNames(String[] attributeDisplayNames) {
         this.atrributeDisplayNames = attributeDisplayNames;
     }

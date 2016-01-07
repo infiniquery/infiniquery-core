@@ -28,12 +28,23 @@ package org.infiniquery.service;
 
 /**
  * @author Daniel Doboga
+ * @since 1.0.0
  */
 public class SecurityException extends RuntimeException {
+	
+	/**
+	 * 
+	 * @param message
+	 */
     public SecurityException(String message) {
         super(message);
     }
 
+    /**
+     * 
+     * @param message
+     * @param cause
+     */
     public SecurityException(String message, Throwable cause) {
         super(message, cause);
     }

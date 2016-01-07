@@ -31,11 +31,12 @@ import java.text.SimpleDateFormat;
 /**
  * Class to hold constants used along the Infiniquery framework.
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public abstract class Constants {
 
     public static final SimpleDateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat("MM-dd-yyyy");
+    
     public static final SimpleDateFormat DEFAULT_DATE_TIME_FORMAT = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
 
     /** Virtual user role suggesting all users should be allowed access to a resource, regardless of their role. */

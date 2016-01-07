@@ -29,7 +29,7 @@ package org.infiniquery.service;
 /**
  * Convenience representation of a fragment of a partial JPQL query
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 class QueryFragment {
 

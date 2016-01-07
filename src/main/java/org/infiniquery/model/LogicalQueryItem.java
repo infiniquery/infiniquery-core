@@ -34,7 +34,7 @@ package org.infiniquery.model;
  * is important.
  *
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public class LogicalQueryItem {
 
@@ -60,18 +60,34 @@ public class LogicalQueryItem {
     /** the display value of the query item, as seen in the UI (without styling) */
     private String displayValue;
 
+    /**
+     * 
+     * @return the type of the logical query item; to be decoded using LogicalQueryItem.Type
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * 
+     * @param type the type of the logical query item; to be decoded using LogicalQueryItem.Type
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * 
+     * @return displayValue
+     */
     public String getDisplayValue() {
         return displayValue;
     }
 
+    /**
+     * 
+     * @param displayValue
+     */
     public void setDisplayValue(String displayValue) {
         this.displayValue = displayValue;
     }

@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * Enum representing possible operators that can be used between an entity attribute and the values we filter it by.
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public enum EntityAttributeOperator {
 
@@ -67,22 +67,44 @@ public enum EntityAttributeOperator {
         this.type = type;
     }
 
+    /**
+     * 
+     * @return displayName
+     */
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * 
+     * @return value
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * 
+     * @return type
+     */
     public EntityAttributeOperatorType getType() {
         return type;
     }
 
+    /**
+     * 
+     * @param displayName
+     * @return the EntityAttributeOperator having the given displayName
+     */
     public static EntityAttributeOperator getByDisplayName(String displayName) {
         return lookupByDisplayName.get(displayName);
     }
 
+    /**
+     * 
+     * @param value
+     * @return the EntityAttributeOperator having the given value
+     */
     public static EntityAttributeOperator getByValue(String value) {
         return lookupByValue.get(value);
     }

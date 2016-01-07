@@ -35,7 +35,7 @@ import java.util.Set;
 /**
  * Value object bean representing an attribute of a JPA entity.
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public class EntityAttribute {
 
@@ -59,6 +59,16 @@ public class EntityAttribute {
 	
 	private boolean displayOnly;
 
+	/**
+	 * 
+	 * @param attributeName
+	 * @param displayName
+	 * @param roles
+	 * @param possibleValuesQuery
+	 * @param possibleValueLabelAttribute
+	 * @param possibleValueLabelAttributePath
+	 * @param displayOnly
+	 */
 	public EntityAttribute(String attributeName, String displayName, final String roles, String possibleValuesQuery, String possibleValueLabelAttribute, String possibleValueLabelAttributePath, boolean displayOnly) {
 		super();
 		this.attributeName = attributeName;
@@ -85,31 +95,58 @@ public class EntityAttribute {
 	void setParentEntity(JpaEntity parentEntity) {
 		this.parentEntity = parentEntity;
 	}
-
+	/**
+	 * 
+	 * @return parentEntity
+	 */
 	public JpaEntity getParentEntity() {
 		return parentEntity;
 	}
 
+	/**
+	 * 
+	 * @return attributeName
+	 */
 	public String getAttributeName() {
 		return attributeName;
 	}
 
+	/**
+	 * 
+	 * @return displayName
+	 */
 	public String getDisplayName() {
 		return displayName;
 	}
 
+	/**
+	 * 
+	 * @return roles
+	 */
 	public String getRoles() {
 		return roles;
 	}
 
+	/**
+	 * 
+	 * @return Set<String> contaning the role values.
+	 */
 	public Set<String> getRoleValues() {
 		return roleSet;
 	}
 
+	/**
+	 * 
+	 * @return displayOnly
+	 */
 	public boolean isDisplayOnly() {
 		return displayOnly;
 	}
 
+	/**
+	 * 
+	 * @return applicableRoles
+	 */
 	public Set<String> getApplicableRoles() {
 		if(applicableRoles == null) {
 			applicableRoles = getIntersection(roleSet, parentEntity.getRoleValues());
@@ -117,14 +154,26 @@ public class EntityAttribute {
 		return applicableRoles;
 	}
 
+	/**
+	 * 
+	 * @return possibleValuesQuery
+	 */
 	public String getPossibleValuesQuery() {
 		return possibleValuesQuery;
 	}
 
+	/**
+	 * 
+	 * @return possibleValueLabelAttribute
+	 */
 	public String getPossibleValueLabelAttribute() {
 		return possibleValueLabelAttribute;
 	}
 	
+	/**
+	 * 
+	 * @return possibleValueLabelAttributePath
+	 */
 	public String getPossibleValueLabelAttributePath() {
 		return possibleValueLabelAttributePath;
 	}
@@ -156,6 +205,10 @@ public class EntityAttribute {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -169,6 +222,10 @@ public class EntityAttribute {
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		int result = parentEntity != null ? parentEntity.hashCode() : 0;

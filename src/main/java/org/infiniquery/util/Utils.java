@@ -28,8 +28,36 @@ package org.infiniquery.util;
 
 import java.lang.annotation.Annotation;
 
+/**
+ * Class containing utility static methods.
+ * 
+ * @author Daniel Doboga
+ * @since 1.0.0
+ *
+ */
 public class Utils {
 
+	/**
+	 * Get a class by its fully qualified class name.
+	 * 
+	 * @param fullyQualifiedName
+	 * @return the class, or null if not found
+	 */
+    public static Class<?> resolveClass(String fullyQualifiedName) {
+        try {
+            return Class.forName(fullyQualifiedName);
+        } catch(ClassNotFoundException e) {
+            return null;
+        }
+    }
+
+	/**
+	 * Check if a given {@link Class} denotes a JPA entity. 
+	 * The verification is done by inspecting the class annotations, if any, via reflection.
+	 * 
+	 * @param attributeType the {@link Class} to be inspected.
+	 * @return true if the given class is mapped as a JPA entity, false otherwise.
+	 */
 	public static boolean isEntity(Class<?> attributeType) {
     	if(attributeType == null) {
     		return false;

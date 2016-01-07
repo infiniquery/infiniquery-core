@@ -27,6 +27,7 @@
 package org.infiniquery.model.decoder;
 
 import static org.infiniquery.util.Utils.isEntity;
+import static org.infiniquery.util.Utils.resolveClass;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
@@ -35,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.infiniquery.model.ClassResolver;
 import org.infiniquery.model.EntityAttributeOperator;
 import org.infiniquery.model.EntityAttributeOperatorType;
 import org.infiniquery.model.UserInputControlType;
@@ -43,7 +43,7 @@ import org.infiniquery.model.UserInputControlType;
 /**
  * Decoder class intended to retrieve user input control types that are applicable for a given entity attribute type and entity attribute operator.
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public class AttributeOperator2UserInputControlMap {
 
@@ -66,7 +66,7 @@ public class AttributeOperator2UserInputControlMap {
         put(java.util.Date.class, UserInputControlType.DATE_INPUT);
         put(java.sql.Date.class, UserInputControlType.DATE_INPUT);
         put(java.sql.Timestamp.class, UserInputControlType.DATE_TIME_INPUT);
-        Class<?> jodaDateTimeClass = ClassResolver.resolveClass("org.joda.time.DateTime");
+        Class<?> jodaDateTimeClass = resolveClass("org.joda.time.DateTime");
         if(jodaDateTimeClass != null) {
             put(jodaDateTimeClass, UserInputControlType.DATE_TIME_INPUT);
         }
@@ -114,6 +114,10 @@ public class AttributeOperator2UserInputControlMap {
             this.operator = operator;
         }
 
+        /*
+         * (non-Javadoc)
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -128,6 +132,10 @@ public class AttributeOperator2UserInputControlMap {
             return true;
         }
 
+        /*
+         * (non-Javadoc)
+         * @see java.lang.Object#hashCode()
+         */
         @Override
         public int hashCode() {
             int result = attributeType != null ? attributeType.hashCode() : 0;

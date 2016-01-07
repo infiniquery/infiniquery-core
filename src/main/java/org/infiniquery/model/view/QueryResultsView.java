@@ -34,6 +34,9 @@ import java.util.Map;
  * Representation of the results of a dynamic query execution.
  * This bean contains both the results list and the display name of the entity type that has been requested.
  * The latter can be used to identify the functions to be used for handling the presentation of the results in UI.
+ * 
+ * @author Daniel Doboga
+ * @since 1.0.0
  */
 public class QueryResultsView {
 
@@ -42,26 +45,50 @@ public class QueryResultsView {
     
     private List<QueryResultItem> items;
     
+    /**
+     * 
+     * @param size
+     */
     public QueryResultsView(int size) {
     	this.items = new ArrayList<>(size);
     }
     
+    /**
+     * 
+     * @param item
+     */
     public void addEntity(QueryResultItem item) {
     	items.add(item);
     }
 
+    /**
+     * 
+     * @return entityName
+     */
 	public String getEntityName() {
 		return entityName;
 	}
 
+	/**
+	 * 
+	 * @param entityName
+	 */
 	public void setEntityName(String entityName) {
 		this.entityName = entityName;
 	}
 
+	/**
+	 * 
+	 * @return items List<QueryResultItem>
+	 */
 	public List<QueryResultItem> getItems() {
 		return items;
 	}
 
+	/**
+	 * 
+	 * @param items List<QueryResultItem>
+	 */
 	public void setItems(List<QueryResultItem> items) {
 		this.items = items;
 	}

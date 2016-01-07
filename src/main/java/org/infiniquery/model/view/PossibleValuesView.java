@@ -31,12 +31,18 @@ import org.infiniquery.model.UserInputControlType;
 /**
  * Data transfer object encapsulating the information necessary to build the input control for filtering values of an entity attribute, in the user interface.
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public class PossibleValuesView {
     private UserInputControlType inputControlType;
     private String[] possibleValues;
 
+    /**
+     * Get an instance of PossibleValuesView
+     * @param inputControlType
+     * @param possibleValues
+     * @return
+     */
     public static PossibleValuesView getInstance(UserInputControlType inputControlType, String[] possibleValues) {
         if(possibleValues == null) {
             return new PossibleValuesView(inputControlType);
@@ -45,27 +51,52 @@ public class PossibleValuesView {
         }
     }
 
+    /**
+     * 
+     * @param inputControlType
+     */
     private PossibleValuesView(UserInputControlType inputControlType) {
         this.inputControlType = inputControlType;
     }
 
+    /**
+     * 
+     * @param inputControlType
+     * @param possibleValues
+     */
     private PossibleValuesView(UserInputControlType inputControlType, String[] possibleValues) {
         this.inputControlType = inputControlType;
         this.possibleValues = possibleValues;
     }
 
+    /**
+     * 
+     * @return UserInputControlType
+     */
     public UserInputControlType getInputControlType() {
         return inputControlType;
     }
 
+    /**
+     * 
+     * @param inputControlType UserInputControlType
+     */
     public void setInputControlType(UserInputControlType inputControlType) {
         this.inputControlType = inputControlType;
     }
 
+    /**
+     * 
+     * @return possibleValues as an array of String
+     */
     public String[] getPossibleValues() {
         return possibleValues;
     }
 
+    /**
+     * 
+     * @param possibleValues String[]
+     */
     public void setPossibleValues(String[] possibleValues) {
         this.possibleValues = possibleValues;
     }

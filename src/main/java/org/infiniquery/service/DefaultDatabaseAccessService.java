@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * Default implementation of the {@link DatabaseAccessService}.
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public class DefaultDatabaseAccessService implements DatabaseAccessService {
 
@@ -46,6 +46,10 @@ public class DefaultDatabaseAccessService implements DatabaseAccessService {
 
     private EntityManager em;
 
+    /*
+     * (non-Javadoc)
+     * @see org.infiniquery.service.DatabaseAccessService#retrieveReferenceData(java.lang.String)
+     */
     @Override
     public List retrieveReferenceData(String queryString) {
         initEntityManagerIfNull();
@@ -53,6 +57,10 @@ public class DefaultDatabaseAccessService implements DatabaseAccessService {
         return executeQuery(queryString, new ArrayList<>());
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.infiniquery.service.DatabaseAccessService#executeQuery(java.lang.String, java.util.List)
+     */
     @Override
     public List executeQuery(String queryString, List<?> params) {
         initEntityManagerIfNull();

@@ -28,23 +28,46 @@ package org.infiniquery.model;
 
 import java.util.List;
 
+/**
+ * Bean representation of the context in which the queries will be generated and executed. 
+ * The context contains the information read from the configuration file.
+ *
+ * @author Daniel Doboga
+ * @since 1.0.0
+ */
 public class InfiniqueryContext {
 
 	private String findKeyword;
 	private List<JpaEntity> entities;
 
+	/**
+	 * 
+	 * @return findKeyword the alias to be used in UI for the "SELECT" keyword
+	 */
 	public String getFindKeyword() {
 		return findKeyword;
 	}
 
+	/**
+	 * 
+	 * @param findKeyword the alias to be used in UI for the "SELECT" keyword
+	 */
 	public void setFindKeyword(String findKeyword) {
 		this.findKeyword = findKeyword;
 	}
 
+	/**
+	 * 
+	 * @return entities List<JpaEntity> representing the entities existing in this context
+	 */
 	public List<JpaEntity> getEntities() {
 		return entities;
 	}
 
+	/**
+	 * 
+	 * @param entities List<JpaEntity> representing the entities to set.
+	 */
 	public void setEntities(List<JpaEntity> entities) {
 		this.entities = entities;
 	}

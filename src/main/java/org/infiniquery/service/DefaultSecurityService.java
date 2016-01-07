@@ -37,11 +37,16 @@ import java.util.Set;
  * If not customized, this implementation will be used, which always returns the maximum possible permissions.
  *
  * @author Daniel Doboga
+ * @since 1.0.0
  */
 public class DefaultSecurityService implements SecurityService {
 
     final static Set<String> DEFAULT_ROLES_SET = Collections.unmodifiableSet(new HashSet<String>(0));
 
+    /*
+     * (non-Javadoc)
+     * @see org.infiniquery.service.SecurityService#getCurrentUserRoles()
+     */
     @Override
     public Set<String> getCurrentUserRoles() {
         return DEFAULT_ROLES_SET;

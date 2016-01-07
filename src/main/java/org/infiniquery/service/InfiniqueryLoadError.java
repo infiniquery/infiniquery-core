@@ -28,12 +28,24 @@ package org.infiniquery.service;
 
 /**
  * Runtime exception to be thrown when the setup of the infiniquery model is improperly done and interaction with the framework becomes unreliable because of that.
+ * @author Daniel Doboga
+ * @since 1.0.0
  */
 public class InfiniqueryLoadError extends RuntimeException {
+	
+	/**
+	 * 
+	 * @param message
+	 */
     public InfiniqueryLoadError(String message) {
         super(message);
     }
 
+    /**
+     * 
+     * @param message
+     * @param cause
+     */
     public InfiniqueryLoadError(String message, Throwable cause) {
         super(message, cause);
     }

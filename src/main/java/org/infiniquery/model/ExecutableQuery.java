@@ -32,7 +32,7 @@ import java.util.List;
  * Value object representing a query as it has been build from the UI.
  *
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public class ExecutableQuery {
     private String htmlDimension;
@@ -41,42 +41,82 @@ public class ExecutableQuery {
     private String jpqlDimension;
     private List<?> jpqlParams;
 
+    /**
+     * 
+     * @return the HTML dimension of this ExecutableQuery.
+     */
     public String getHtmlDimension() {
         return htmlDimension;
     }
 
+    /**
+     * 
+     * @param htmlDimension the HTML dimension to set on this ExecutableQuery.
+     */
     public void setHtmlDimension(String htmlDimension) {
         this.htmlDimension = htmlDimension;
     }
 
+    /**
+     * 
+     * @return the plain text dimension of this ExecutableQuery.
+     */
     public String getPlainTextDimension() {
         return plainTextDimension;
     }
 
+    /**
+     * 
+     * @param plainTextDimension the plain text dimension to set on this ExecutableQuery.
+     */
     public void setPlainTextDimension(String plainTextDimension) {
         this.plainTextDimension = plainTextDimension;
     }
 
+    /**
+     * 
+     * @return LogicalQueryItem[] representing the logical representation of this ExecutableQuery
+     */
     public LogicalQueryItem[] getLogicalDimension() {
         return logicalDimension;
     }
 
+    /**
+     * 
+     * @param logicalDimension the logical dimension to set for this ExecutableQuery
+     */
     public void setLogicalDimension(LogicalQueryItem[] logicalDimension) {
         this.logicalDimension = logicalDimension;
     }
 
+    /**
+     * 
+     * @return the JPQL representation of this ExecutableQuery
+     */
     public String getJpqlDimension() {
         return jpqlDimension;
     }
 
+    /**
+     * 
+     * @param jpqlDimension the JPQL representation to set for this ExecutableQuery
+     */
     public void setJpqlDimension(String jpqlDimension) {
         this.jpqlDimension = jpqlDimension;
     }
 
+    /**
+     * 
+     * @return the parameters for executing the prepared statement represented by the JPQL dimension of this ExecutableQuery
+     */
     public List<?> getJpqlParams() {
         return jpqlParams;
     }
 
+    /**
+     * 
+     * @param jpqlParams the parameters for executing the prepared statement represented by the JPQL dimension of this ExecutableQuery
+     */
     public void setJpqlParams(List<?> jpqlParams) {
         this.jpqlParams = jpqlParams;
     }

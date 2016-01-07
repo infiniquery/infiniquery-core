@@ -30,6 +30,8 @@ import java.util.LinkedHashMap;
 
 /**
  * Representation of a query result entity instance.
+ * @author Daniel Doboga
+ * @since 1.0.0
  */
 public class QueryResultItem {
 

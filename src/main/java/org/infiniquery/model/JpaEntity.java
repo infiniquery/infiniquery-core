@@ -34,7 +34,7 @@ import java.util.Set;
 /**
  * Value object representing a JPA entity.
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public class JpaEntity {
 
@@ -48,6 +48,13 @@ public class JpaEntity {
 
 	private List<EntityAttribute> attributes;
 
+	/**
+	 * 
+	 * @param className
+	 * @param displayName
+	 * @param roles
+	 * @param attributes List<EntityAttribute>
+	 */
 	public JpaEntity(String className, String displayName, final String roles, List<EntityAttribute> attributes) {
 		super();
 		this.className = className;
@@ -69,26 +76,50 @@ public class JpaEntity {
 		}
 	}
 
+	/**
+	 * 
+	 * @return className
+	 */
 	public String getClassName() {
 		return className;
 	}
 
+	/**
+	 * 
+	 * @return displayName
+	 */
 	public String getDisplayName() {
 		return displayName;
 	}
 
+	/**
+	 * 
+	 * @return roles the values of the user roles that can access this entity, as a CSV String
+	 */
 	public String getRoles() {
 		return roles;
 	}
 
+	/**
+	 * 
+	 * @return the values of the user roles that can access this entity
+	 */
 	public Set<String> getRoleValues() {
 		return roleSet;
 	}
 
+	/**
+	 * 
+	 * @return the list of attributes to expose for this entity
+	 */
 	public List<EntityAttribute> getAttributes() {
 		return attributes;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -102,6 +133,10 @@ public class JpaEntity {
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		return displayName != null ? displayName.hashCode() : 0;

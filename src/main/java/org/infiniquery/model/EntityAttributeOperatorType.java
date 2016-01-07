@@ -29,7 +29,7 @@ package org.infiniquery.model;
 /**
  * Enum representing possible types of an {@link org.infiniquery.model.EntityAttributeOperator}, such as "single value" or "multi-value" operator.
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public enum EntityAttributeOperatorType {
     SINGLE_VALUE,

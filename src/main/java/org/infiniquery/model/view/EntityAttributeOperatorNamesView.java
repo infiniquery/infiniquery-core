@@ -30,24 +30,39 @@ package org.infiniquery.model.view;
  * Data transfer object encapsulating the information necessary on the user interface to display the operators applicable for a specific entity attribute.
  *
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public class EntityAttributeOperatorNamesView {
 
     private String[] atrributOperatorNames;
 
+    /**
+     * 
+     */
     public EntityAttributeOperatorNamesView() {
 
     }
 
+    /**
+     * 
+     * @param atrributeOperatorNames
+     */
     public EntityAttributeOperatorNamesView(String[] atrributeOperatorNames) {
         this.atrributOperatorNames = atrributeOperatorNames;
     }
 
+    /**
+     * 
+     * @return atrributOperatorNames
+     */
     public String[] getEntityAttributeOperatorNames() {
         return atrributOperatorNames;
     }
 
+    /**
+     * 
+     * @param attributeOperatorNames
+     */
     public void setAttributeOperatorNames(String[] attributeOperatorNames) {
         this.atrributOperatorNames = attributeOperatorNames;
     }

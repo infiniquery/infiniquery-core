@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * Service empowering the interaction of above layers (e.g. frontend or MVC controllers) with the infiniquery model.
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public interface QueryModelService {
 	
@@ -87,6 +87,13 @@ public interface QueryModelService {
      */
     public EntityAttributeOperatorNamesView getEntityAttributeOperatorNamesView(String entityDisplayName, String attributeDisplayName);
 
+    /**
+     * Get the value of an entity attribute identified by the given params.
+     * @param entityDisplayName
+     * @param attributeDisplayName
+     * @param operatorDisplayName
+     * @return a PossibleValuesView
+     */
     public PossibleValuesView getEntityAttributeOperatorValue(String entityDisplayName, String attributeDisplayName, String operatorDisplayName);
 
     /**
@@ -129,12 +136,28 @@ public interface QueryModelService {
      */
     public void reloadQueryContext();
 
+    /**
+     * 
+     * @param databaseAccessService
+     */
     public void setDatabaseAccessService(DatabaseAccessService databaseAccessService);
 
+    /**
+     * 
+     * @return the SecurityService used by this QueryModelService.
+     */
     public SecurityService getSecurityService();
 
+    /**
+     * 
+     * @param securityService the SecurityService to be used by this QueryModelService.
+     */
 	public void setSecurityService(SecurityService securityService);
 
+	/**
+	 * 
+	 * @return the DatabaseAccessService used by this QueryModelService.
+	 */
 	public DatabaseAccessService getDatabaseAccessService();
 
 }

@@ -28,6 +28,8 @@ package org.infiniquery.service;
 
 import static org.infiniquery.Constants.DEFAULT_DATE_FORMAT;
 import static org.infiniquery.Constants.DEFAULT_DATE_TIME_FORMAT;
+import static org.infiniquery.util.Utils.isEntity;
+import static org.infiniquery.util.Utils.resolveClass;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -35,10 +37,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.sql.Date;
 import java.text.ParseException;
-import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -57,7 +56,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.infiniquery.Constants;
 import org.infiniquery.connector.JpaConnector;
-import org.infiniquery.model.ClassResolver;
 import org.infiniquery.model.ConditionSeparatorKeyword;
 import org.infiniquery.model.EntityAttribute;
 import org.infiniquery.model.EntityAttributeOperator;
@@ -78,8 +76,9 @@ import org.infiniquery.model.view.QueryResultsView;
 
 /**
  * Service empowering the interaction of above layers (e.g. frontend or MVC controllers) with the infiniquery model.
+ * 
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public class DefaultQueryModelService implements QueryModelService {
 
@@ -89,34 +88,52 @@ public class DefaultQueryModelService implements QueryModelService {
 
     private InfiniqueryContext dynamicQueryContextCache;
 
+    /*
+     * (non-Javadoc)
+     * @see org.infiniquery.service.QueryModelService#setDatabaseAccessService(org.infiniquery.service.DatabaseAccessService)
+     */
     public void setDatabaseAccessService(DatabaseAccessService databaseAccessService) {
         this.databaseAccessService = databaseAccessService;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.infiniquery.service.QueryModelService#getSecurityService()
+     */
     public SecurityService getSecurityService() {
 		return securityService;
 	}
 
+    /*
+     * (non-Javadoc)
+     * @see org.infiniquery.service.QueryModelService#setSecurityService(org.infiniquery.service.SecurityService)
+     */
 	public void setSecurityService(SecurityService securityService) {
 		this.securityService = securityService;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.infiniquery.service.QueryModelService#getDatabaseAccessService()
+	 */
 	public DatabaseAccessService getDatabaseAccessService() {
 		return databaseAccessService;
 	}
 
-	/**
-     * {@inheritDoc}
-     */
+	/*
+	 * (non-Javadoc)
+	 * @see org.infiniquery.service.QueryModelService#getFindKeyword()
+	 */
     @Override
 	public String getFindKeyword() {
         InfiniqueryContext model = getDynamicQueryContext();
         return model.getFindKeyword();
 	}
 
-	/**
-     * {@inheritDoc}
-     */
+	/*
+	 * (non-Javadoc)
+	 * @see org.infiniquery.service.QueryModelService#getEntityDisplayNames()
+	 */
     @Override
     public List<String> getEntityDisplayNames() {
         InfiniqueryContext model = getDynamicQueryContext();
@@ -129,16 +146,18 @@ public class DefaultQueryModelService implements QueryModelService {
         return entityNames;
     }
 
-    /**
-     * {@inheritDoc}
+    /*
+     * (non-Javadoc)
+     * @see org.infiniquery.service.QueryModelService#getEntityDisplayNamesView()
      */
     @Override
     public EntityDisplayNamesView getEntityDisplayNamesView() {
         return new EntityDisplayNamesView(getEntityDisplayNames().toArray(new String[0]));
     }
 
-    /**
-     * {@inheritDoc}
+    /*
+     * (non-Javadoc)
+     * @see org.infiniquery.service.QueryModelService#getEntityAttributeDisplayNames(java.lang.String)
      */
     @Override
     public List<String> getEntityAttributeDisplayNames(String entityDisplayName) {
@@ -156,8 +175,9 @@ public class DefaultQueryModelService implements QueryModelService {
         return attributeNames;
     }
 
-    /**
-     * {@inheritDoc}
+    /*
+     * (non-Javadoc)
+     * @see org.infiniquery.service.QueryModelService#getEntityAttributeDisplayNamesView(java.lang.String)
      */
     @Override
     public EntityAttributeDisplayNamesView getEntityAttributeDisplayNamesView(String entityDisplayName) {
@@ -191,6 +211,10 @@ public class DefaultQueryModelService implements QueryModelService {
         return new EntityAttributeOperatorNamesView(getEntityAttributeOperatorNames(entityDisplayName, attributeDisplayName));
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.infiniquery.service.QueryModelService#getEntityAttributeOperatorValue(java.lang.String, java.lang.String, java.lang.String)
+     */
     @Override
     public PossibleValuesView getEntityAttributeOperatorValue(String entityDisplayName, String attributeDisplayName, String operatorDisplayName) {
         try {
@@ -279,6 +303,10 @@ public class DefaultQueryModelService implements QueryModelService {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.infiniquery.service.QueryModelService#reloadQueryContext()
+     */
     public void reloadQueryContext() {
         try {
             dynamicQueryContextCache = JpaConnector.getDynamicQueryContext();
@@ -495,7 +523,7 @@ public class DefaultQueryModelService implements QueryModelService {
         for(LogicalQueryItem logicalQueryItem : logicalDimension) {
             final String itemType = logicalQueryItem.getType();
             if(LogicalQueryItem.Type.findKeyword.name().equals(itemType)) {
-                jpqlStatement.append("SELECT");
+                jpqlStatement.append("SELECT DISTINCT");
             } else if(LogicalQueryItem.Type.entityName.name().equals(itemType)) {
                 jpaEntity = resolveEntity(logicalQueryItem.getDisplayValue());
                 String entityClassName = jpaEntity.getClassName();
@@ -534,7 +562,7 @@ public class DefaultQueryModelService implements QueryModelService {
         if(String.class.equals(valueClass)) {
             return new QueryFragment("?", displayedValue);
         }
-        Class<?> jodaDateTimeClass = ClassResolver.resolveClass("org.joda.time.DateTime");
+        Class<?> jodaDateTimeClass = resolveClass("org.joda.time.DateTime");
         if(jodaDateTimeClass != null && jodaDateTimeClass.equals(valueClass)) {
             return new QueryFragment("?", parseJodaDateTime(displayedValue));
         }
@@ -544,7 +572,7 @@ public class DefaultQueryModelService implements QueryModelService {
         if(java.util.Date.class.isAssignableFrom(valueClass)) {
             return new QueryFragment("?", DEFAULT_DATE_TIME_FORMAT.parse(displayedValue));
         }
-        if(Collection.class.isAssignableFrom(valueClass)) {
+        if(Collection.class.isAssignableFrom(valueClass) || isEntity(valueClass)) {
         	String[] values = displayedValue.split(",");
         	StringBuilder queryFragment = new StringBuilder("(");
         	for(String value : values) {
@@ -767,9 +795,9 @@ public class DefaultQueryModelService implements QueryModelService {
      */
     private Object parseJodaDateTime(final String stringDate) {
         try {
-            final Class<?> jodaDateTimeClass = ClassResolver.resolveClass("org.joda.time.DateTime");
-            final Class<?> dateTimeFormatClass = ClassResolver.resolveClass("org.joda.time.format.DateTimeFormat");
-            final Class<?> dateTimeFormatterClass = ClassResolver.resolveClass("org.joda.time.format.DateTimeFormatter");
+            final Class<?> jodaDateTimeClass = resolveClass("org.joda.time.DateTime");
+            final Class<?> dateTimeFormatClass = resolveClass("org.joda.time.format.DateTimeFormat");
+            final Class<?> dateTimeFormatterClass = resolveClass("org.joda.time.format.DateTimeFormatter");
             final Method parseMethod = jodaDateTimeClass.getMethod("parse", String.class, dateTimeFormatterClass);
             final Method forPatternMethod = dateTimeFormatClass.getMethod("forPattern", String.class);
             final Object formatter = forPatternMethod.invoke(null, Constants.DEFAULT_DATE_TIME_FORMAT);

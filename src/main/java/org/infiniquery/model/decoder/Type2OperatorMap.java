@@ -27,6 +27,7 @@
 package org.infiniquery.model.decoder;
 
 import static org.infiniquery.util.Utils.isEntity;
+import static org.infiniquery.util.Utils.resolveClass;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,13 +35,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.infiniquery.model.ClassResolver;
 import org.infiniquery.model.EntityAttributeOperator;
 
 /**
  * Decoder class intended to map the relationship between JPA entity attribute types and their applicable operators.
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public class Type2OperatorMap {
 
@@ -150,7 +150,7 @@ public class Type2OperatorMap {
                 EntityAttributeOperator.AFTER,
                 EntityAttributeOperator.EQUALS
         } );
-        Class<?> jodaDateTimeClass = ClassResolver.resolveClass("org.joda.time.DateTime");
+        Class<?> jodaDateTimeClass = resolveClass("org.joda.time.DateTime");
         if(jodaDateTimeClass != null) {
             put(jodaDateTimeClass, new EntityAttributeOperator[]{
                     EntityAttributeOperator.BEFORE,
@@ -159,8 +159,8 @@ public class Type2OperatorMap {
             });
         }
         put(Collection.class, new EntityAttributeOperator[] {
-                EntityAttributeOperator.EQUALS,
-                EntityAttributeOperator.LIKE,
+                //EntityAttributeOperator.EQUALS,
+                //EntityAttributeOperator.LIKE,
                 EntityAttributeOperator.IN
         } );
     }};

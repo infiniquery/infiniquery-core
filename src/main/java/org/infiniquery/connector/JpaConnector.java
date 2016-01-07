@@ -52,7 +52,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Connector of the Infiniquery framework for Java Persistence API.
+ * Connector of the Infiniquery framework for working with Java Persistence API Query Language.
+ * 
+ * @author Daniel Doboga
+ * @since 1.0.0
  */
 public class JpaConnector {
 
@@ -60,17 +63,13 @@ public class JpaConnector {
 	private static final EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);;
 	private static final EntityManager em = factory.createEntityManager();
 
-	public static void main(String[] args) throws Exception {
-		
-		final long start = System.currentTimeMillis();
-		InfiniqueryContext queryContext = getDynamicQueryContext();
-		em.close();
-		factory.close();
-		final long end = System.currentTimeMillis();
-		
-		System.out.println(end - start);
-	}
-
+	/**
+	 * Retrieve the {@link InfiniqueryContext}, by reading the infiniquery-config.xml configuration file. 
+	 * This file is expected to be found in the root of the application's classpath.
+	 * 
+	 * @return an instance of {@link InfiniqueryContext} representing the content of the configuration file.
+	 * @throws ParserConfigurationException
+	 */
 	public static InfiniqueryContext getDynamicQueryContext() throws ParserConfigurationException {
 		InputStream configInputStream = JpaConnector.class.getClassLoader().getResourceAsStream("infiniquery-config.xml");
 

@@ -31,12 +31,13 @@ import java.util.Set;
 /**
  *
  * @author Daniel Doboga
+ * @since 1.0.0
  */
 public interface SecurityService {
 
     /**
      * Retrieve the roles of the currently logged application user.
-     * @return
+     * @return a set of String objects representing the role(s) of the current user
      */
     Set<String> getCurrentUserRoles();
 

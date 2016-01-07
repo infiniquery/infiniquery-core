@@ -31,12 +31,23 @@ import java.util.List;
 /**
  *
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public interface DatabaseAccessService {
 
+	/**
+	 * Get the reference data retrieved by the given query
+	 * @param query
+	 * @return a list of resulted objects
+	 */
     List retrieveReferenceData(String query);
 
+    /**
+     * Execute a query with a set of parameters.
+     * @param queryString the query to execute
+     * @param params a list of parameters
+     * @return a list of objects resulted form the query execution
+     */
     List executeQuery(String queryString, List<?> params);
 
 }

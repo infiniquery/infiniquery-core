@@ -32,8 +32,9 @@ import java.util.Map;
 
 /**
  * Enum representing possible values of condition separator keywords.
+ * 
  * @author Daniel Doboga
- * @since 1.0
+ * @since 1.0.0
  */
 public enum ConditionSeparatorKeyword {
 
@@ -58,18 +59,36 @@ public enum ConditionSeparatorKeyword {
         this.value = value;
     }
 
+    /**
+     * 
+     * @return displayName
+     */
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     * 
+     * @return value
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Get a ConditionSeparatorKeyword by its displayName.
+     * @param displayName
+     * @return the ConditionSeparatorKeyword having the given displayName.
+     */
     public static ConditionSeparatorKeyword getByDisplayName(String displayName) {
         return lookupByDisplayName.get(displayName);
     }
 
+    /**
+     * Get a ConditionSeparatorKeyword by its value.
+     * @param value
+     * @return the ConditionSeparatorKeyword having the given value.
+     */
     public static ConditionSeparatorKeyword getByValue(String value) {
         return lookupByValue.get(value);
     }
