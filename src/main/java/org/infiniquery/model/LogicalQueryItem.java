@@ -86,7 +86,7 @@ public class LogicalQueryItem {
 
     /**
      * 
-     * @param displayValue
+     * @param displayValue the displayable representation of this logical qury item
      */
     public void setDisplayValue(String displayValue) {
         this.displayValue = displayValue;

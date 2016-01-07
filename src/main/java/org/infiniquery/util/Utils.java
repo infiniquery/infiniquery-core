@@ -40,7 +40,7 @@ public class Utils {
 	/**
 	 * Get a class by its fully qualified class name.
 	 * 
-	 * @param fullyQualifiedName
+	 * @param fullyQualifiedName the fully qualified name of the Class
 	 * @return the class, or null if not found
 	 */
     public static Class<?> resolveClass(String fullyQualifiedName) {

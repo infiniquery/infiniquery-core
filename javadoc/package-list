@@ -1,0 +1,7 @@
+org.infiniquery
+org.infiniquery.connector
+org.infiniquery.model
+org.infiniquery.model.decoder
+org.infiniquery.model.view
+org.infiniquery.service
+org.infiniquery.util

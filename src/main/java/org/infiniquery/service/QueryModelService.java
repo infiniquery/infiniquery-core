@@ -89,10 +89,10 @@ public interface QueryModelService {
 
     /**
      * Get the value of an entity attribute identified by the given params.
-     * @param entityDisplayName
-     * @param attributeDisplayName
-     * @param operatorDisplayName
-     * @return a PossibleValuesView
+     * @param entityDisplayName the displayable alias of the entity
+     * @param attributeDisplayName the displayable alias of the attribute
+     * @param operatorDisplayName the displayable alias of the operator
+     * @return a PossibleValuesView bean encapsulating the information to display in UI
      */
     public PossibleValuesView getEntityAttributeOperatorValue(String entityDisplayName, String attributeDisplayName, String operatorDisplayName);
 
@@ -127,7 +127,7 @@ public interface QueryModelService {
      * Register a security service with this query model service.
      * For example, you can register your own implementation of {@link org.infiniquery.service.SecurityService} to tell it how to determine the role of the current logged user.
      * If this method is not used to register a custom security service, the default security service will be used, which always allows the maximum access rights to any user.
-     * @param securityService
+     * @param securityService the security service to register
      */
     public void registerSecurityService(SecurityService securityService);
 
@@ -138,7 +138,7 @@ public interface QueryModelService {
 
     /**
      * 
-     * @param databaseAccessService
+     * @param databaseAccessService the database access service to set
      */
     public void setDatabaseAccessService(DatabaseAccessService databaseAccessService);
 

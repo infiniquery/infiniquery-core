@@ -45,7 +45,7 @@ public class EntityDisplayNamesView {
 
     /**
      * 
-     * @param entityDisplayNames
+     * @param entityDisplayNames an array of String objects representing the displayable aliases of the available entities
      */
     public EntityDisplayNamesView(String[] entityDisplayNames) {
         this.entityDisplayNames = entityDisplayNames;
@@ -61,7 +61,7 @@ public class EntityDisplayNamesView {
 
     /**
      * 
-     * @param entityDisplayNames
+     * @param entityDisplayNames an array of String objects representing the displayable aliases of the available entities
      */
     public void setEntityDisplayNames(String[] entityDisplayNames) {
         this.entityDisplayNames = entityDisplayNames;

@@ -93,7 +93,7 @@ public enum EntityAttributeOperator {
 
     /**
      * 
-     * @param displayName
+     * @param displayName the displayable alias
      * @return the EntityAttributeOperator having the given displayName
      */
     public static EntityAttributeOperator getByDisplayName(String displayName) {
@@ -102,7 +102,7 @@ public enum EntityAttributeOperator {
 
     /**
      * 
-     * @param value
+     * @param value the value of the operator that represents it in the query language
      * @return the EntityAttributeOperator having the given value
      */
     public static EntityAttributeOperator getByValue(String value) {

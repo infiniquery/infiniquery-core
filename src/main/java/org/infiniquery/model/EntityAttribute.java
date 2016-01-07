@@ -61,13 +61,13 @@ public class EntityAttribute {
 
 	/**
 	 * 
-	 * @param attributeName
-	 * @param displayName
-	 * @param roles
-	 * @param possibleValuesQuery
-	 * @param possibleValueLabelAttribute
-	 * @param possibleValueLabelAttributePath
-	 * @param displayOnly
+	 * @param attributeName the name of the java attribute of the entity class
+	 * @param displayName the displayable alias
+	 * @param roles the roles, comma separated
+	 * @param possibleValuesQuery the query to retrieve the collection of possible values.
+	 * @param possibleValueLabelAttribute the object attribute to consider as label for representation of the objects retrieved by executing possibleValuesQuery
+	 * @param possibleValueLabelAttributePath the path within the object tree, deep to the possibleValuesLabelAttribute
+	 * @param displayOnly boolean flag dictating whether or not the attribute should be displayed only in the results, or also added as search filter.
 	 */
 	public EntityAttribute(String attributeName, String displayName, final String roles, String possibleValuesQuery, String possibleValueLabelAttribute, String possibleValueLabelAttributePath, boolean displayOnly) {
 		super();
@@ -129,7 +129,7 @@ public class EntityAttribute {
 
 	/**
 	 * 
-	 * @return Set<String> contaning the role values.
+	 * @return a Set of String contaning the role values.
 	 */
 	public Set<String> getRoleValues() {
 		return roleSet;

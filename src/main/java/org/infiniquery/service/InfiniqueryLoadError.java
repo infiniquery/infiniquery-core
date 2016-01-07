@@ -35,7 +35,7 @@ public class InfiniqueryLoadError extends RuntimeException {
 	
 	/**
 	 * 
-	 * @param message
+	 * @param message the error message
 	 */
     public InfiniqueryLoadError(String message) {
         super(message);
@@ -43,8 +43,8 @@ public class InfiniqueryLoadError extends RuntimeException {
 
     /**
      * 
-     * @param message
-     * @param cause
+     * @param message the error message
+     * @param cause the Throwable cause
      */
     public InfiniqueryLoadError(String message, Throwable cause) {
         super(message, cause);

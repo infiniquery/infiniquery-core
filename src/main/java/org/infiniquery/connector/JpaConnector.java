@@ -68,7 +68,7 @@ public class JpaConnector {
 	 * This file is expected to be found in the root of the application's classpath.
 	 * 
 	 * @return an instance of {@link InfiniqueryContext} representing the content of the configuration file.
-	 * @throws ParserConfigurationException
+	 * @throws ParserConfigurationException if the xml file is invalid
 	 */
 	public static InfiniqueryContext getDynamicQueryContext() throws ParserConfigurationException {
 		InputStream configInputStream = JpaConnector.class.getClassLoader().getResourceAsStream("infiniquery-config.xml");

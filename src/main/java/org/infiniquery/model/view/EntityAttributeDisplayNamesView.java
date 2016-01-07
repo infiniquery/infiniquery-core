@@ -53,7 +53,7 @@ public class EntityAttributeDisplayNamesView {
 
     /**
      * 
-     * @return atrributeDisplayNames
+     * @return atrributeDisplayNames an array of String objects representing the displayable aliases of the available attributes
      */
     public String[] getEntityAttributeDisplayNames() {
         return atrributeDisplayNames;
@@ -61,7 +61,7 @@ public class EntityAttributeDisplayNamesView {
 
     /**
      * 
-     * @param attributeDisplayNames
+     * @param attributeDisplayNames an array of String objects representing the displayable aliases of the available attributes
      */
     public void setAttributeDisplayNames(String[] attributeDisplayNames) {
         this.atrributeDisplayNames = attributeDisplayNames;

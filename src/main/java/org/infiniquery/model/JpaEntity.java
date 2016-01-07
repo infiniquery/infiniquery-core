@@ -50,10 +50,10 @@ public class JpaEntity {
 
 	/**
 	 * 
-	 * @param className
-	 * @param displayName
-	 * @param roles
-	 * @param attributes List<EntityAttribute>
+	 * @param className the full name of the {@link Class} representing the entity
+	 * @param displayName the displayable alias
+	 * @param roles the roles for which this entity is accessible, comma separated
+	 * @param attributes a List of {@link EntityAttribute}
 	 */
 	public JpaEntity(String className, String displayName, final String roles, List<EntityAttribute> attributes) {
 		super();

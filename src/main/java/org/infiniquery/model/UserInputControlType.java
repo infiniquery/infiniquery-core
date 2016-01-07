@@ -27,9 +27,9 @@
 package org.infiniquery.model;
 
 /**
- * Enum representing the types of controls on the user interface for different data types and operator types. For example, for predefined values (also named reference data), we will have a combobox if the operator type is "single value", or a multi-selection list if the operator type is "multi-value"; for a String attribute type we can have a textbox for single value or multiple textboxes if the operator type is "multi-value"; etc.<br/>
- *
- * IMPORTANT: These values are decoded on the UI and translated into specific user input controls. Any change to this enum should be kept in sync with the JavaScript code.<br/>
+ * Enum representing the types of controls on the user interface for different data types and operator types. For example, for predefined values (also named reference data), we will have a combobox if the operator type is "single value", or a multi-selection list if the operator type is "multi-value"; for a String attribute type we can have a textbox for single value or multiple textboxes if the operator type is "multi-value"; etc.
+ * <br>
+ * IMPORTANT: These values are decoded on the UI and translated into specific user input controls. Any change to this enum should be kept in sync with the JavaScript code.
  *
  * @author Daniel Doboga
  * @since 1.0

@@ -34,7 +34,7 @@ public class SecurityException extends RuntimeException {
 	
 	/**
 	 * 
-	 * @param message
+	 * @param message the error message
 	 */
     public SecurityException(String message) {
         super(message);
@@ -42,8 +42,8 @@ public class SecurityException extends RuntimeException {
 
     /**
      * 
-     * @param message
-     * @param cause
+     * @param message the error message
+     * @param cause the Throwable Cause
      */
     public SecurityException(String message, Throwable cause) {
         super(message, cause);

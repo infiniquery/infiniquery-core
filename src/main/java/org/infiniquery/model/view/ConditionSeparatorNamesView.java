@@ -45,7 +45,7 @@ public class ConditionSeparatorNamesView {
 
     /**
      * 
-     * @param conditionSeparatorNames
+     * @param conditionSeparatorNames an array of String objects
      */
     public ConditionSeparatorNamesView(String[] conditionSeparatorNames) {
         this.conditionSeparatorNames = conditionSeparatorNames;
@@ -53,7 +53,7 @@ public class ConditionSeparatorNamesView {
 
     /**
      * 
-     * @return conditionSeparatorNames an array of String
+     * @return conditionSeparatorNames an array of String objects
      */
     public String[] getConditionSeparatorNames() {
         return conditionSeparatorNames;
@@ -61,7 +61,7 @@ public class ConditionSeparatorNamesView {
 
     /**
      * 
-     * @param conditionSeparatorNames an array of String
+     * @param conditionSeparatorNames an array of String objects
      */
     public void setConditionSeparatorNames(String[] conditionSeparatorNames) {
         this.conditionSeparatorNames = conditionSeparatorNames;

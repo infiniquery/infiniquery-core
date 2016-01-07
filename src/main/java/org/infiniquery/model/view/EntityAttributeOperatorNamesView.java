@@ -45,7 +45,7 @@ public class EntityAttributeOperatorNamesView {
 
     /**
      * 
-     * @param atrributeOperatorNames
+     * @param atrributeOperatorNames an array of String values representing the aliases of the attribute operators
      */
     public EntityAttributeOperatorNamesView(String[] atrributeOperatorNames) {
         this.atrributOperatorNames = atrributeOperatorNames;
@@ -53,7 +53,7 @@ public class EntityAttributeOperatorNamesView {
 
     /**
      * 
-     * @return atrributOperatorNames
+     * @return atrributOperatorNames an array of String values representing the aliases of the attribute operators
      */
     public String[] getEntityAttributeOperatorNames() {
         return atrributOperatorNames;
@@ -61,7 +61,7 @@ public class EntityAttributeOperatorNamesView {
 
     /**
      * 
-     * @param attributeOperatorNames
+     * @param attributeOperatorNames an array of String values representing the aliases of the attribute operators
      */
     public void setAttributeOperatorNames(String[] attributeOperatorNames) {
         this.atrributOperatorNames = attributeOperatorNames;

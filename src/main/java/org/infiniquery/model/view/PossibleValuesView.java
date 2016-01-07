@@ -39,8 +39,8 @@ public class PossibleValuesView {
 
     /**
      * Get an instance of PossibleValuesView
-     * @param inputControlType
-     * @param possibleValues
+     * @param inputControlType the type of the input control to be generated in UI
+     * @param possibleValues the eventual possible, predefined, values
      * @return
      */
     public static PossibleValuesView getInstance(UserInputControlType inputControlType, String[] possibleValues) {
@@ -53,7 +53,7 @@ public class PossibleValuesView {
 
     /**
      * 
-     * @param inputControlType
+     * @param inputControlType the type of input control from UI
      */
     private PossibleValuesView(UserInputControlType inputControlType) {
         this.inputControlType = inputControlType;
@@ -61,8 +61,8 @@ public class PossibleValuesView {
 
     /**
      * 
-     * @param inputControlType
-     * @param possibleValues
+     * @param inputControlType  the type of input control from UI
+     * @param possibleValues the eventual possible predefined values
      */
     private PossibleValuesView(UserInputControlType inputControlType, String[] possibleValues) {
         this.inputControlType = inputControlType;
@@ -71,7 +71,7 @@ public class PossibleValuesView {
 
     /**
      * 
-     * @return UserInputControlType
+     * @return UserInputControlType  the type of input control from UI
      */
     public UserInputControlType getInputControlType() {
         return inputControlType;
@@ -79,7 +79,7 @@ public class PossibleValuesView {
 
     /**
      * 
-     * @param inputControlType UserInputControlType
+     * @param inputControlType UserInputControlType  the type of input control from UI
      */
     public void setInputControlType(UserInputControlType inputControlType) {
         this.inputControlType = inputControlType;

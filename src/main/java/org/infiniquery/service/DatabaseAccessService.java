@@ -37,7 +37,7 @@ public interface DatabaseAccessService {
 
 	/**
 	 * Get the reference data retrieved by the given query
-	 * @param query
+	 * @param query the String query
 	 * @return a list of resulted objects
 	 */
     List retrieveReferenceData(String query);

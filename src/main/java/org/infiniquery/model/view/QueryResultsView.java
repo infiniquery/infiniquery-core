@@ -47,7 +47,7 @@ public class QueryResultsView {
     
     /**
      * 
-     * @param size
+     * @param size the number of items in this result view
      */
     public QueryResultsView(int size) {
     	this.items = new ArrayList<>(size);
@@ -55,7 +55,7 @@ public class QueryResultsView {
     
     /**
      * 
-     * @param item
+     * @param item the query result item to add
      */
     public void addEntity(QueryResultItem item) {
     	items.add(item);
@@ -63,7 +63,7 @@ public class QueryResultsView {
 
     /**
      * 
-     * @return entityName
+     * @return entityName the entity (type) display name
      */
 	public String getEntityName() {
 		return entityName;
@@ -71,7 +71,7 @@ public class QueryResultsView {
 
 	/**
 	 * 
-	 * @param entityName
+	 * @param entityName the entity (type) display name
 	 */
 	public void setEntityName(String entityName) {
 		this.entityName = entityName;
@@ -79,7 +79,7 @@ public class QueryResultsView {
 
 	/**
 	 * 
-	 * @return items List<QueryResultItem>
+	 * @return items a List of QueryResultItem objects
 	 */
 	public List<QueryResultItem> getItems() {
 		return items;
@@ -87,7 +87,7 @@ public class QueryResultsView {
 
 	/**
 	 * 
-	 * @param items List<QueryResultItem>
+	 * @param items a List of QueryResultItem objects
 	 */
 	public void setItems(List<QueryResultItem> items) {
 		this.items = items;

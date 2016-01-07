@@ -77,7 +77,7 @@ public enum ConditionSeparatorKeyword {
 
     /**
      * Get a ConditionSeparatorKeyword by its displayName.
-     * @param displayName
+     * @param displayName the display name
      * @return the ConditionSeparatorKeyword having the given displayName.
      */
     public static ConditionSeparatorKeyword getByDisplayName(String displayName) {
@@ -86,7 +86,7 @@ public enum ConditionSeparatorKeyword {
 
     /**
      * Get a ConditionSeparatorKeyword by its value.
-     * @param value
+     * @param value the value 
      * @return the ConditionSeparatorKeyword having the given value.
      */
     public static ConditionSeparatorKeyword getByValue(String value) {

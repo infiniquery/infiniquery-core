@@ -58,7 +58,7 @@ public class InfiniqueryContext {
 
 	/**
 	 * 
-	 * @return entities List<JpaEntity> representing the entities existing in this context
+	 * @return entities a List of {@link JpaEntity} objects representing the entities existing in this context
 	 */
 	public List<JpaEntity> getEntities() {
 		return entities;
@@ -66,7 +66,7 @@ public class InfiniqueryContext {
 
 	/**
 	 * 
-	 * @param entities List<JpaEntity> representing the entities to set.
+	 * @param entities a List of {@link JpaEntity} objects representing the entities to set.
 	 */
 	public void setEntities(List<JpaEntity> entities) {
 		this.entities = entities;
