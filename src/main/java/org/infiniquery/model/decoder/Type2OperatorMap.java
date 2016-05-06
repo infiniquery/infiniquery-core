@@ -145,6 +145,11 @@ public class Type2OperatorMap {
                 EntityAttributeOperator.AFTER,
                 EntityAttributeOperator.EQUALS
         } );
+        put(java.time.LocalDate.class, new EntityAttributeOperator[] {
+                EntityAttributeOperator.BEFORE,
+                EntityAttributeOperator.AFTER,
+                EntityAttributeOperator.EQUALS
+        } );
         put(java.sql.Timestamp.class, new EntityAttributeOperator[] {
                 EntityAttributeOperator.BEFORE,
                 EntityAttributeOperator.AFTER,

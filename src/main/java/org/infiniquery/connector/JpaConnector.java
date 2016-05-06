@@ -59,9 +59,24 @@ import org.w3c.dom.NodeList;
  */
 public class JpaConnector {
 
-	private static final String PERSISTENCE_UNIT_NAME = "TestUnit";
-	private static final EntityManagerFactory factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);;
-	private static final EntityManager em = factory.createEntityManager();
+	private static String DEFAULT_PERSISTENCE_UNIT_NAME = "TestUnit";
+	private static EntityManager em;
+	private static boolean setUpCompleted = false;
+	
+	private static void lazyInit() {
+		if(! setUpCompleted) {
+			EntityManagerFactory factory = Persistence.createEntityManagerFactory(DEFAULT_PERSISTENCE_UNIT_NAME);
+			em = factory.createEntityManager();
+		}
+	}
+	
+	public static void setEntityManager(EntityManager entityManager) {
+		if(entityManager != null ) {
+			em = entityManager;
+			setUpCompleted = true;
+		}
+		
+	}
 
 	/**
 	 * Retrieve the {@link InfiniqueryContext}, by reading the infiniquery-config.xml configuration file. 
@@ -71,6 +86,8 @@ public class JpaConnector {
 	 * @throws ParserConfigurationException if the xml file is invalid
 	 */
 	public static InfiniqueryContext getDynamicQueryContext() throws ParserConfigurationException {
+		lazyInit();
+		
 		InputStream configInputStream = JpaConnector.class.getClassLoader().getResourceAsStream("infiniquery-config.xml");
 
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();

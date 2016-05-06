@@ -63,8 +63,9 @@ public class AttributeOperator2UserInputControlMap {
         put(Double.class, UserInputControlType.NUMBER_INPUT);
         put(BigInteger.class, UserInputControlType.NUMBER_INPUT);
         put(BigDecimal.class, UserInputControlType.NUMBER_INPUT);
-        put(java.util.Date.class, UserInputControlType.DATE_INPUT);
+        put(java.util.Date.class, UserInputControlType.DATE_TIME_INPUT);
         put(java.sql.Date.class, UserInputControlType.DATE_INPUT);
+        put(java.time.LocalDate.class, UserInputControlType.DATE_INPUT);
         put(java.sql.Timestamp.class, UserInputControlType.DATE_TIME_INPUT);
         Class<?> jodaDateTimeClass = resolveClass("org.joda.time.DateTime");
         if(jodaDateTimeClass != null) {

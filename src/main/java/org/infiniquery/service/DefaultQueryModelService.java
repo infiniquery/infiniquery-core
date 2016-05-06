@@ -27,7 +27,10 @@
 package org.infiniquery.service;
 
 import static org.infiniquery.Constants.DEFAULT_DATE_FORMAT;
+import static org.infiniquery.Constants.DEFAULT_DATE_FORMATTER;
+import static org.infiniquery.Constants.DEFAULT_DATE_PATTERN;
 import static org.infiniquery.Constants.DEFAULT_DATE_TIME_FORMAT;
+import static org.infiniquery.Constants.DEFAULT_DATE_TIME_FORMATTER;
 import static org.infiniquery.util.Utils.isEntity;
 import static org.infiniquery.util.Utils.resolveClass;
 
@@ -38,6 +41,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -338,7 +342,7 @@ public class DefaultQueryModelService implements QueryModelService {
 			queryResultsView = new QueryResultsView(queryResults.size());
 			for (Object queryResult : queryResults) {
 				QueryResultItem virtualInstance = new QueryResultItem();
-				for (EntityAttribute attribute : entity.getAttributes()) {
+				for (EntityAttribute attribute : entity.getAttributesInReverseOrder()) {
 					if(userAccessAllowed(attribute)) {
 						virtualInstance.add(attribute.getDisplayName(),
 								readAttributeValue(attribute, entity, queryResult));
@@ -568,6 +572,9 @@ public class DefaultQueryModelService implements QueryModelService {
         }
         if(java.sql.Date.class.isAssignableFrom(valueClass)) {
             return new QueryFragment("?", new java.sql.Date(DEFAULT_DATE_FORMAT.parse(displayedValue).getTime()));
+        }
+        if(java.time.LocalDate.class.isAssignableFrom(valueClass)) {
+        	return new QueryFragment("?", LocalDate.parse(displayedValue, DEFAULT_DATE_FORMATTER));
         }
         if(java.util.Date.class.isAssignableFrom(valueClass)) {
             return new QueryFragment("?", DEFAULT_DATE_TIME_FORMAT.parse(displayedValue));

@@ -27,6 +27,8 @@
 package org.infiniquery;
 
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+
 
 /**
  * Class to hold constants used along the Infiniquery framework.
@@ -35,9 +37,17 @@ import java.text.SimpleDateFormat;
  */
 public abstract class Constants {
 
-    public static final SimpleDateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat("MM-dd-yyyy");
+	public static final String DEFAULT_DATE_PATTERN = "dd-M-yyyy";
+	
+	public static final String DEFAULT_DATE_TIME_PATTERN = "dd-M-yyyy HH:mm:ss";
+
+    public static final SimpleDateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat(DEFAULT_DATE_PATTERN);
     
-    public static final SimpleDateFormat DEFAULT_DATE_TIME_FORMAT = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+    public static final SimpleDateFormat DEFAULT_DATE_TIME_FORMAT = new SimpleDateFormat(DEFAULT_DATE_TIME_PATTERN);
+    
+    public static final DateTimeFormatter DEFAULT_DATE_FORMATTER = DateTimeFormatter.ofPattern(DEFAULT_DATE_PATTERN);
+    
+    public static final DateTimeFormatter DEFAULT_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_PATTERN);
 
     /** Virtual user role suggesting all users should be allowed access to a resource, regardless of their role. */
     public static final String ROLES_ALL = "ALL";

@@ -26,6 +26,7 @@
 
 package org.infiniquery.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -114,6 +115,16 @@ public class JpaEntity {
 	 */
 	public List<EntityAttribute> getAttributes() {
 		return attributes;
+	}
+
+	/**
+	 * 
+	 * @return the list of attributes to expose for this entity, in the reverse order.
+	 */
+	public List<EntityAttribute> getAttributesInReverseOrder() {
+		List<EntityAttribute> reverseList = new ArrayList<>(attributes);
+		Collections.reverse(reverseList);
+		return reverseList;
 	}
 
 	/*

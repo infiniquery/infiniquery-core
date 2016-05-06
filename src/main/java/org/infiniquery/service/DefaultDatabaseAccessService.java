@@ -83,4 +83,8 @@ public class DefaultDatabaseAccessService implements DatabaseAccessService {
             em = factory.createEntityManager();
         }
     }
+
+    public void setEntityManager(EntityManager entityManager) {
+    	this.em = entityManager;
+    }
 }

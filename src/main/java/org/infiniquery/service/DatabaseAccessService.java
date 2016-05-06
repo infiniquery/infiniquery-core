@@ -28,6 +28,8 @@ package org.infiniquery.service;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 /**
  *
  * @author Daniel Doboga

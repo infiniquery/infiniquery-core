@@ -41,7 +41,7 @@ public class PossibleValuesView {
      * Get an instance of PossibleValuesView
      * @param inputControlType the type of the input control to be generated in UI
      * @param possibleValues the eventual possible, predefined, values
-     * @return
+     * @return an instance of PossibleValuesView
      */
     public static PossibleValuesView getInstance(UserInputControlType inputControlType, String[] possibleValues) {
         if(possibleValues == null) {

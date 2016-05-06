@@ -45,7 +45,7 @@ public class EntityAttributeDisplayNamesView {
 
     /**
      * 
-     * @param atrributeDisplayNames
+     * @param atrributeDisplayNames an array of String containing the attribute display names.
      */
     public EntityAttributeDisplayNamesView(String[] atrributeDisplayNames) {
         this.atrributeDisplayNames = atrributeDisplayNames;
