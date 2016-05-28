@@ -4,7 +4,7 @@
 
 	<groupId>org.infiniquery</groupId>
 	<artifactId>infiniquery-core</artifactId>
-	<version>1.1-RC</version>
+	<version>1.2</version>
 	<packaging>jar</packaging>
 
 	<name>Infiniquery core</name>
