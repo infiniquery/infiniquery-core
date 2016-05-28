@@ -132,6 +132,7 @@ public class Type2OperatorMap {
         } );
         put(String.class, new EntityAttributeOperator[] {
                 EntityAttributeOperator.EQUALS,
+                EntityAttributeOperator.CONTAINS,
                 EntityAttributeOperator.LIKE,
                 EntityAttributeOperator.IN
         } );

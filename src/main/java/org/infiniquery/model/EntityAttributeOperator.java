@@ -39,6 +39,7 @@ public enum EntityAttributeOperator {
 
     EQUALS ("=", "=", EntityAttributeOperatorType.SINGLE_VALUE),
     LIKE ("like", "LIKE", EntityAttributeOperatorType.SINGLE_VALUE),
+    CONTAINS ("contains", "LIKE", EntityAttributeOperatorType.SINGLE_VALUE),
     IN ("in", "IN", EntityAttributeOperatorType.MULTI_VALUE),
     GREATER_THAN ("greater than", ">", EntityAttributeOperatorType.SINGLE_VALUE),
     LOWER_THAN ("lower than", "<", EntityAttributeOperatorType.SINGLE_VALUE),

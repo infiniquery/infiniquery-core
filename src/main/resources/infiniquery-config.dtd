@@ -15,4 +15,6 @@
         possibleValueLabelAttributePath CDATA #IMPLIED
         possibleValuesQuery CDATA #IMPLIED
         roles CDATA #IMPLIED
-        displayOnly CDATA #IMPLIED>
+        displayOnly CDATA #IMPLIED
+        scope (query|results|all) #IMPLIED
+        >

@@ -36,6 +36,25 @@ import java.lang.annotation.Annotation;
  *
  */
 public class Utils {
+	final static Class<?>[] PRIMITIVE_NUMERIC_TYPES = new Class<?>[]{int.class, short.class, long.class, double.class, float.class};
+    
+	/**
+	 * Verify whether or not a Class denotes a known numeric type 
+	 * (which is either a primitive numeric type, or any class that extends java.lang.Number).
+	 * @param type a Class representing the type to check.
+	 * @return true if the type is a known numeric type, or false otherwise.
+	 */
+    public static boolean isNumericType(Class<?> type) {
+    	for(Class<?> clazz : PRIMITIVE_NUMERIC_TYPES) {
+	    	if(clazz.equals(type)) {
+	    		return true;
+	    	}
+    	}
+    	if(Number.class.isAssignableFrom(type)) {
+    		return true;
+    	}
+    	return false;
+    }
 
 	/**
 	 * Get a class by its fully qualified class name.

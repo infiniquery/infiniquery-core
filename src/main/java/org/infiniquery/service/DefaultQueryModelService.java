@@ -28,10 +28,9 @@ package org.infiniquery.service;
 
 import static org.infiniquery.Constants.DEFAULT_DATE_FORMAT;
 import static org.infiniquery.Constants.DEFAULT_DATE_FORMATTER;
-import static org.infiniquery.Constants.DEFAULT_DATE_PATTERN;
 import static org.infiniquery.Constants.DEFAULT_DATE_TIME_FORMAT;
-import static org.infiniquery.Constants.DEFAULT_DATE_TIME_FORMATTER;
 import static org.infiniquery.util.Utils.isEntity;
+import static org.infiniquery.util.Utils.isNumericType;
 import static org.infiniquery.util.Utils.resolveClass;
 
 import java.lang.annotation.Annotation;
@@ -40,6 +39,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -170,7 +171,7 @@ public class DefaultQueryModelService implements QueryModelService {
         for(JpaEntity entity : model.getEntities()) {
             if(entityDisplayName.equals(entity.getDisplayName())) {
                 for(EntityAttribute attribute : entity.getAttributes()) {
-                    if( (!attribute.isDisplayOnly()) && userAccessAllowed(entity) && userAccessAllowed(attribute)) {
+                    if( (isAvailableForQuery(attribute)) && userAccessAllowed(entity) && userAccessAllowed(attribute)) {
                         attributeNames.add(attribute.getDisplayName());
                     }
                 }
@@ -343,7 +344,7 @@ public class DefaultQueryModelService implements QueryModelService {
 			for (Object queryResult : queryResults) {
 				QueryResultItem virtualInstance = new QueryResultItem();
 				for (EntityAttribute attribute : entity.getAttributesInReverseOrder()) {
-					if(userAccessAllowed(attribute)) {
+					if(isAvailableForResults(attribute) && userAccessAllowed(attribute)) {
 						virtualInstance.add(attribute.getDisplayName(),
 								readAttributeValue(attribute, entity, queryResult));
 					}
@@ -415,7 +416,7 @@ public class DefaultQueryModelService implements QueryModelService {
         return builder.toString();
     }
 
-    private static Method resolveGetterMethod(String propertyName, Class clazz) {
+    private static Method resolveGetterMethod(String propertyName, Class<?> clazz) {
         final String firstChar = propertyName.substring(0, 1);
         final String nonPrefixedGetter = propertyName.replaceFirst(firstChar, firstChar.toUpperCase());
         Method getterMethod;
@@ -458,12 +459,18 @@ public class DefaultQueryModelService implements QueryModelService {
     	if(object == null) {
     		return null;
     	}
-    	if(Collection.class.isAssignableFrom(object.getClass())) {
+    	final Class<?> clazz = object.getClass();
+    	if(Collection.class.isAssignableFrom(clazz)) {
     		List<Object> virtualObjects = new ArrayList<>();
 			for(Object item : (Collection<?>) object) {
 				virtualObjects.add(resolveAttributeValue(item, new LinkedList<String>(objectTreePath)));
 			}
 			return virtualObjects;
+    	} else if(String.class.isAssignableFrom(clazz)) {
+    		return (String) object;
+    	} else if(isNumericType(clazz)) {
+    		return (Number) object;
+    		//TODO do the same for numeric types
     	} else {
     		String attributeName = objectTreePath.poll();
     		Method getterMethod = resolveGetterMethod(attributeName, object.getClass());
@@ -524,6 +531,7 @@ public class DefaultQueryModelService implements QueryModelService {
         StringBuilder jpqlStatement = new StringBuilder();
         JpaEntity jpaEntity = null;
         EntityAttribute lastAttribute = null;
+        EntityAttributeOperator lastOperator = null;
         for(LogicalQueryItem logicalQueryItem : logicalDimension) {
             final String itemType = logicalQueryItem.getType();
             if(LogicalQueryItem.Type.findKeyword.name().equals(itemType)) {
@@ -546,10 +554,12 @@ public class DefaultQueryModelService implements QueryModelService {
             } else if(LogicalQueryItem.Type.operatorKeyword.name().equals(itemType)) {
                 EntityAttributeOperator operator = EntityAttributeOperator.getByDisplayName(logicalQueryItem.getDisplayValue());
                 jpqlStatement.append(' ').append(operator.getValue());
+                lastOperator = operator;
             } else if(LogicalQueryItem.Type.entityAttributeValue.name().equals(itemType)) {
-                QueryFragment queryFragment = parseEntityAttributeValue(lastAttribute, logicalQueryItem.getDisplayValue());
+                QueryFragment queryFragment = parseEntityAttributeValue(lastAttribute, logicalQueryItem.getDisplayValue(), EntityAttributeOperator.IN.equals(lastOperator));
                 jpqlStatement.append(' ').append(queryFragment.fragment);
                 for(Object parameter : queryFragment.parameters) {
+                	parameter = adaptValueToOperator(parameter, lastOperator);
                     queryParams.add(parameter);
                 }
             } else if(LogicalQueryItem.Type.conditionSeparatorKeyword.name().equals(itemType)) {
@@ -560,11 +570,29 @@ public class DefaultQueryModelService implements QueryModelService {
         executableQuery.setJpqlDimension(jpqlStatement.toString());
         executableQuery.setJpqlParams(queryParams);
     }
+    
+    /**
+     * Some parameter values need additional processing for specific operators that are synthetic. 
+     * This method detects if such processing is needed and does it if so.
+     * @param parameterValue an Object
+     * @param operator an EntityAttributeOperator
+     * @return Object representing the input parameter after being eventually decorated.
+     */
+    private Object adaptValueToOperator(Object parameterValue, EntityAttributeOperator operator) {
+    	if(EntityAttributeOperator.CONTAINS.equals(operator)) {
+    		parameterValue = "%" + parameterValue + "%";
+    	}
+    	return parameterValue;
+    }
 
-    private QueryFragment parseEntityAttributeValue(EntityAttribute attribute, String displayedValue) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException, ParseException {
+    private QueryFragment parseEntityAttributeValue(EntityAttribute attribute, String displayedValue, boolean isMultiValue) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException, ParseException {
         Class<?> valueClass = resolveAttributeType(attribute);
         if(String.class.equals(valueClass)) {
-            return new QueryFragment("?", displayedValue);
+        	if(isMultiValue) {
+            	return parseEntityAttributeMultiValue(displayedValue);
+        	} else {
+        		return new QueryFragment("?", displayedValue);
+        	}
         }
         Class<?> jodaDateTimeClass = resolveClass("org.joda.time.DateTime");
         if(jodaDateTimeClass != null && jodaDateTimeClass.equals(valueClass)) {
@@ -579,24 +607,11 @@ public class DefaultQueryModelService implements QueryModelService {
         if(java.util.Date.class.isAssignableFrom(valueClass)) {
             return new QueryFragment("?", DEFAULT_DATE_TIME_FORMAT.parse(displayedValue));
         }
+        if(isNumericType(valueClass)) {
+            return new QueryFragment("?", castNumericValue(displayedValue, valueClass));
+        }
         if(Collection.class.isAssignableFrom(valueClass) || isEntity(valueClass)) {
-        	String[] values = displayedValue.split(",");
-        	StringBuilder queryFragment = new StringBuilder("(");
-        	for(String value : values) {
-        		if(queryFragment.length() != 1) {
-        			queryFragment.append(",");
-        		}
-        		queryFragment.append("?");
-        	}
-        	queryFragment.append(")");
-        	return new QueryFragment(queryFragment.toString(), (Object[]) values);
-            /* TODO  remove possibilities for predefined values in current version
-                * if it has possibleValuesLabelAttribute and target entity attribute is entity type
-                    - create inner select (from DB entity where label attribute in values)
-                * if it has possibleValues
-                    - return in <and values split by comma>
-             */
-
+        	return parseEntityAttributeMultiValue(displayedValue);
         }
         //if not caught in above scenarios, then go looking for a static valueOf() method or a string-argument constructor
         Method publicStaticValueOfMethod = getPublicStaticValueOfMethod(valueClass);
@@ -609,6 +624,49 @@ public class DefaultQueryModelService implements QueryModelService {
             return new QueryFragment("?", stringArgumentConstructor.newInstance(displayedValue));
         }
         throw new UnsupportedOperationException("Unsupported attribute value type: " + valueClass);
+    }
+    
+    private QueryFragment parseEntityAttributeMultiValue(String displayedValue) {
+    	String[] values = displayedValue.split(",");
+    	StringBuilder queryFragment = new StringBuilder("(");
+    	for(String value : values) {
+    		if(queryFragment.length() != 1) {
+    			queryFragment.append(",");
+    		}
+    		queryFragment.append("?");
+    	}
+    	queryFragment.append(")");
+    	return new QueryFragment(queryFragment.toString(), (Object[]) values);
+    }
+    
+    private Object castNumericValue(String value, Class<?> clazz) {
+    	if(Integer.class.isAssignableFrom(clazz)) {
+    		return Integer.valueOf(value);
+    	} else if(Double.class.isAssignableFrom(clazz)) {
+    		return Double.valueOf(value);
+    	} else if(Float.class.isAssignableFrom(clazz)) {
+    		return Float.valueOf(value);
+    	} else if(Short.class.isAssignableFrom(clazz)) {
+    		return Short.valueOf(value);
+    	} else if(Long.class.isAssignableFrom(clazz)) {
+    		return Long.valueOf(value);
+    	} else if(int.class.isAssignableFrom(clazz)) {
+    		return Integer.parseInt(value);
+    	} else if(double.class.isAssignableFrom(clazz)) {
+    		return Double.parseDouble(value);
+    	} else if(float.class.isAssignableFrom(clazz)) {
+    		return Float.parseFloat(value);
+    	} else if(short.class.isAssignableFrom(clazz)) {
+    		return Short.parseShort(value);
+    	} else if(long.class.isAssignableFrom(clazz)) {
+    		return Long.parseLong(value);
+    	} else if(BigInteger.class.isAssignableFrom(clazz)) {
+    		return new BigInteger(value);
+    	} else if(BigDecimal.class.isAssignableFrom(clazz)) {
+    		return new BigDecimal(value);
+    	} else {
+    		throw new UnsupportedOperationException("Unsupported attribute value type: " + clazz);
+    	}
     }
 
     private static Method getPublicStaticValueOfMethod(Class<?> clazz) {
@@ -667,18 +725,44 @@ public class DefaultQueryModelService implements QueryModelService {
         throw new InfiniqueryLoadError("Entity not found in configuration: " + entityDisplayName);
     }
 
-    private List<String> getApplicableOperatorsDisplayNames(EntityAttribute attribute) throws ClassNotFoundException, NoSuchFieldException {
+    private List<String> getApplicableOperatorsDisplayNames(final EntityAttribute attribute) throws ClassNotFoundException, NoSuchFieldException {
         String attributeName = attribute.getAttributeName();
         Class<?> entityClass = Class.forName(attribute.getParentEntity().getClassName());
         Field field = entityClass.getDeclaredField(attributeName);
-        Class<?> fieldType = field.getType();
+        final Class<?> fieldType = field.getType();
         final EntityAttributeOperator[] applicableOperators = Type2OperatorMap.getApplicableOperatorsForType(fieldType);
-        List<String> list = new ArrayList<String>() {{
+        @SuppressWarnings("serial")
+		List<String> list = new ArrayList<String>() {{
             for(EntityAttributeOperator operator : applicableOperators) {
-                add(operator.getDisplayName());
+            	if(!isBasicType(fieldType) || isOperatorSuitableForPresetValuesOfAttribute(operator, attribute)) {
+            		add(operator.getDisplayName());
+            	}
             }
         }};
         return list;
+    }
+
+    private boolean isBasicType(Class<?> type) {
+    	if(type.isAssignableFrom(String.class) || 
+    			type.isAssignableFrom(int.class) || type.isAssignableFrom(short.class) || type.isAssignableFrom(long.class) || 
+    			type.isAssignableFrom(float.class) || type.isAssignableFrom(double.class) || type.isAssignableFrom(Number.class)) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+    
+    private boolean isOperatorSuitableForPresetValuesOfAttribute(EntityAttributeOperator operator, EntityAttribute attribute) {
+    	if(attribute.getPossibleValuesQuery() != null) {
+    		if(EntityAttributeOperator.IN.equals(operator)) {
+    			return true;
+    		}
+    	} else{
+    		if(! EntityAttributeOperator.IN.equals(operator)) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
     private Class<?> resolveAttributeType(EntityAttribute attribute) throws ClassNotFoundException, NoSuchFieldException {
@@ -694,7 +778,8 @@ public class DefaultQueryModelService implements QueryModelService {
      * @param attribute
      * @return
      */
-    private String[] preparePossibleValues(List originalItems, EntityAttribute attribute) {
+    @SuppressWarnings("unchecked")
+	private String[] preparePossibleValues(List<?> originalItems, EntityAttribute attribute) {
         try {
             if(originalItems == null || originalItems.isEmpty()) {
                 return new String[0];
@@ -704,6 +789,9 @@ public class DefaultQueryModelService implements QueryModelService {
                 Field labelField;
                 if(attribute.getPossibleValueLabelAttribute() != null) {
                     labelField = originalItemType.getDeclaredField(attribute.getPossibleValueLabelAttribute());
+                } else if(String.class.equals(originalItemType)) {
+                    return ((List<String>)originalItems).toArray(new String[0]);
+                    //TODO add this possibility also for numeric types
                 } else {
                     labelField = getTheFirstEncounteredStringField(originalItemType);
                 }
@@ -720,7 +808,7 @@ public class DefaultQueryModelService implements QueryModelService {
         }
     }
 
-    private Field getTheFirstEncounteredStringField(Class clazz) {
+    private Field getTheFirstEncounteredStringField(Class<?> clazz) {
         for(Field field : clazz.getDeclaredFields()) {
             ignoreField:
             if(String.class.equals(field.getType())) {
@@ -823,7 +911,8 @@ public class DefaultQueryModelService implements QueryModelService {
     private boolean currentUserMatchesAllowedRoles(final Set<String> allowedRoles) {
 
         final Set<String> userRoles = securityService.getCurrentUserRoles();
-        final Set<String> userRolesUppercased = new HashSet<String>() {{
+        @SuppressWarnings("serial")
+		final Set<String> userRolesUppercased = new HashSet<String>() {{
             if(userRoles != null) {
                 for (String role : userRoles) {
                     if (role != null) {
@@ -832,7 +921,8 @@ public class DefaultQueryModelService implements QueryModelService {
                 }
             }
         }};
-        final Set<String> allowedRolesUppercased = new HashSet<String>() {{
+        @SuppressWarnings("serial")
+		final Set<String> allowedRolesUppercased = new HashSet<String>() {{
             for(String role : allowedRoles) {
                 if(role != null){
                     add(role.toUpperCase());
@@ -935,4 +1025,39 @@ public class DefaultQueryModelService implements QueryModelService {
 		}
     }
     
+    /**
+     * Verify if a particular EntityAttribute was configured to be shown as column in the query results table.
+     * @param attribute an EntityAttribute
+     * @return true if the given attribute was configured to be shown as column in the query results table, or false otherwise.
+     */
+    private boolean isAvailableForResults(EntityAttribute attribute) {
+    	if(attribute.getScope() == null) {
+    		return true;
+    	} else {
+    		switch(attribute.getScope()) {
+	    		case all : return true;
+	    		case query : return false;
+	    		case results : return true;
+	    		default : return false;
+    		}
+    	}
+    }
+    
+    private boolean isAvailableForQuery(EntityAttribute attribute) {
+    	if(attribute.getScope() == null) {
+    		if(attribute.isDisplayOnly()) {
+    			return false;
+    		} else {
+    			return true;
+    		}
+    	} else {
+    		switch(attribute.getScope()) {
+	    		case all : return true;
+	    		case query : return true;
+	    		case results : return false;
+	    		default : return false;
+    		}
+    	}
+    }
+
 }

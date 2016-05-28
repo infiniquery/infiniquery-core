@@ -38,6 +38,10 @@ import java.util.Set;
  * @since 1.0.0
  */
 public class EntityAttribute {
+	
+	public enum Scope {
+		query, results, all
+	}
 
 	private JpaEntity parentEntity;
 
@@ -58,6 +62,8 @@ public class EntityAttribute {
 	private String possibleValueLabelAttributePath;
 	
 	private boolean displayOnly;
+	
+	private Scope scope;
 
 	/**
 	 * 
@@ -68,8 +74,9 @@ public class EntityAttribute {
 	 * @param possibleValueLabelAttribute the object attribute to consider as label for representation of the objects retrieved by executing possibleValuesQuery
 	 * @param possibleValueLabelAttributePath the path within the object tree, deep to the possibleValuesLabelAttribute
 	 * @param displayOnly boolean flag dictating whether or not the attribute should be displayed only in the results, or also added as search filter.
+	 * @param scope the scope of this attribute (value is expected to be either null or to match the name of one EntityAttribute.Scope predefined values).
 	 */
-	public EntityAttribute(String attributeName, String displayName, final String roles, String possibleValuesQuery, String possibleValueLabelAttribute, String possibleValueLabelAttributePath, boolean displayOnly) {
+	public EntityAttribute(String attributeName, String displayName, final String roles, String possibleValuesQuery, String possibleValueLabelAttribute, String possibleValueLabelAttributePath, boolean displayOnly, String scope) {
 		super();
 		this.attributeName = attributeName;
 		this.displayName = displayName;
@@ -89,6 +96,11 @@ public class EntityAttribute {
 		this.possibleValueLabelAttribute = possibleValueLabelAttribute;
 		if(possibleValuesQuery != null) {
 			this.possibleValueLabelAttributePath = possibleValueLabelAttributePath != null ? possibleValueLabelAttributePath : attributeName + "." + possibleValueLabelAttribute;
+		}
+		if(scope == null) {
+			this.scope = null;
+		} else {
+			this.scope = Scope.valueOf(scope);
 		}
 	}
 
@@ -136,7 +148,7 @@ public class EntityAttribute {
 	}
 
 	/**
-	 * 
+	 * @deprecated Use getScope() to check instead.
 	 * @return displayOnly
 	 */
 	public boolean isDisplayOnly() {
@@ -176,6 +188,14 @@ public class EntityAttribute {
 	 */
 	public String getPossibleValueLabelAttributePath() {
 		return possibleValueLabelAttributePath;
+	}
+
+	/**
+	 * 
+	 * @return EntityAttribute.Scope - the scope of this attribute
+	 */
+	public Scope getScope() {
+		return scope;
 	}
 
 	private static Set<String> getIntersection(Set<String> set1, Set<String> set2) {

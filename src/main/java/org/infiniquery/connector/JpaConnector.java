@@ -156,7 +156,8 @@ public class JpaConnector {
 					attributes.getNamedItem("possibleValuesQuery") == null ? null : attributes.getNamedItem("possibleValuesQuery").getNodeValue(),
 					attributes.getNamedItem("possibleValueLabelAttribute") == null ? null : attributes.getNamedItem("possibleValueLabelAttribute").getNodeValue(),
 					attributes.getNamedItem("possibleValueLabelAttributePath") == null ? null : attributes.getNamedItem("possibleValueLabelAttributePath").getNodeValue(),
-					new Boolean(attributes.getNamedItem("displayOnly") == null ? null : attributes.getNamedItem("displayOnly").getNodeValue()) 
+					new Boolean(attributes.getNamedItem("displayOnly") == null ? null : attributes.getNamedItem("displayOnly").getNodeValue()),
+					attributes.getNamedItem("scope") == null ? null : attributes.getNamedItem("scope").getNodeValue()
 					);
 			attributeList.add(entityAttribute);
 		}
