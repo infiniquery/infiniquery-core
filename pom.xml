@@ -30,7 +30,7 @@
 		<url>https://github.com/infiniquery/infiniquery-core</url>
 		<connection>scm:git:git://github.com/infiniquery/infiniquery-core.git</connection>
 		<developerConnection>scm:git:git@github.com:infiniquery/infiniquery-core.git</developerConnection>
-	  <tag>infiniquery-core-1.1-RC</tag>
+	  <tag>infiniquery-core-1.2</tag>
   </scm>
 	
 	<properties>
