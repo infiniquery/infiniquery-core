@@ -6,7 +6,8 @@
 <!ATTLIST entity
         className CDATA #REQUIRED
         displayName CDATA #REQUIRED
-        roles CDATA #IMPLIED>
+        roles CDATA #IMPLIED
+        additionalFilter CDATA #IMPLIED>
 <!ELEMENT attribute (#PCDATA)>
 <!ATTLIST attribute
         attributeName CDATA #REQUIRED

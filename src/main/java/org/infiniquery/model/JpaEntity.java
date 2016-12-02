@@ -47,34 +47,12 @@ public class JpaEntity {
 
 	private Set<String> roleSet;
 
+	private String additionalFilter;
+
 	private List<EntityAttribute> attributes;
 
-	/**
-	 * 
-	 * @param className the full name of the {@link Class} representing the entity
-	 * @param displayName the displayable alias
-	 * @param roles the roles for which this entity is accessible, comma separated
-	 * @param attributes a List of {@link EntityAttribute}
-	 */
-	public JpaEntity(String className, String displayName, final String roles, List<EntityAttribute> attributes) {
+	private JpaEntity() {
 		super();
-		this.className = className;
-		this.displayName = displayName;
-		this.roles = roles;
-		this.roleSet = Collections.unmodifiableSet(new HashSet<String>() {
-			{
-				if (roles != null && !roles.isEmpty()) {
-					String[] roleValues = roles.split(",");
-					for (String role : roleValues) {
-						add(role.trim());
-					}
-				}
-			}
-		});
-		this.attributes = attributes;
-		for(EntityAttribute attribute : attributes) {
-			attribute.setParentEntity(this);
-		}
 	}
 
 	/**
@@ -127,6 +105,19 @@ public class JpaEntity {
 		return reverseList;
 	}
 
+	/**
+	 * Get the additional filter jpql string, that may contain dynamic attributes. The
+	 * dynamic attributes, if any, can be expressed in the query as ${variableName} and 
+	 * their values are inserted into the global scope by the getGlobalScopeAttributes()
+	 * method of the SecurityService (client applications should provide a custom implementation
+	 * of the SecurityService in order to make this effective).
+	 * 
+	 * @return the additional filter jpql string.
+	 */
+	public String getAdditionalFilter() {
+		return additionalFilter;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -152,4 +143,106 @@ public class JpaEntity {
 	public int hashCode() {
 		return displayName != null ? displayName.hashCode() : 0;
 	}
+
+	/**
+	 * Startup point for creating JpaEntity instances.
+	 * @return a builder object for constructing new JpaEntity instances.
+	 */
+	public static JpaEntityBuilder newBuilder() {
+		return new JpaEntityBuilder();
+	}
+
+	public static class JpaEntityBuilder {
+		private JpaEntity jpaEntity = new JpaEntity();
+		
+		/**
+		 * Set the className in the builder object.
+		 * @param className the full name of the {@link Class} representing the entity
+		 * @return the builder object it is called on.
+		 */
+		public JpaEntityBuilder withClassName(String className) {
+			jpaEntity.className = className;
+			return this;
+		}
+		
+		/**
+		 * Set the displayName in the builder ojbject.
+		 * @param displayName the displayable alias
+		 * @return the builder object it is called on.
+		 */
+		public JpaEntityBuilder withDisplayName(String displayName) {
+			jpaEntity.displayName = displayName;
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @param roles
+		 * @return the builder object it is called on.
+		 */
+		public JpaEntityBuilder withRoles(final String roles) {
+			jpaEntity.roles = roles;
+			jpaEntity.roleSet = Collections.unmodifiableSet(new HashSet<String>() {
+				{
+					if (roles != null && !roles.isEmpty()) {
+						String[] roleValues = roles.split(",");
+						for (String role : roleValues) {
+							add(role.trim());
+						}
+					}
+				}
+			});
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @param additionalFilter
+		 * @return the builder object it is called on.
+		 */
+		public JpaEntityBuilder withAdditionalFilter(String additionalFilter) {
+			jpaEntity.additionalFilter = additionalFilter;
+			return this;
+		}
+		
+		/**
+		 * 
+		 * @param attributes
+		 * @return the builder object it is called on.
+		 */
+		public JpaEntityBuilder withAttributes(List<EntityAttribute> attributes) {
+			jpaEntity.attributes = attributes;
+			jpaEntity.attributes = attributes;
+			for(EntityAttribute attribute : attributes) {
+				attribute.setParentEntity(jpaEntity);
+			}
+			return this;
+		}
+		
+		/**
+		 * Ends the work of this builder by creating the target object and invalidating this builder.
+		 * This method can successfully be called only once. If one call throws an exception, it may be
+		 * called again and again. Once the method returns successfully, any subsequent call will 
+		 * 
+		 * @return the constructed JpaEntity
+		 * @throws IllegalStateException if one of the required attributes are not yet set in the constructed object,
+		 * or if the builder has already been consumed (which is one successful invocation off this method
+		 * has already happened.
+		 */
+		public JpaEntity build() {
+			if(jpaEntity.className == null) {
+				throw new IllegalStateException("className attribute of the JpaEntity cannot be null.");
+			}
+			if(jpaEntity.displayName == null) {
+				throw new IllegalStateException("displayName attribute of the JpaEntity cannot be null.");
+			}
+			if(jpaEntity == null) {
+				throw new IllegalStateException("This builder has aleady been consumed.");
+			}
+			final JpaEntity finalEntity = jpaEntity;
+			jpaEntity = null;
+			return finalEntity;
+		}
+	}
+
 }

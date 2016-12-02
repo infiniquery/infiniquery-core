@@ -132,12 +132,15 @@ public class JpaConnector {
 	    for(int i=0; i<entitiesCount; i++) {
 	    	Node entityNode = entityNodes.item(i);
 	    	NamedNodeMap attributes = entityNode.getAttributes();
-	    	JpaEntity entity = new JpaEntity(
-	    			attributes.getNamedItem("className").getNodeValue(),
-	    			attributes.getNamedItem("displayName").getNodeValue(),
-	    			attributes.getNamedItem("roles") == null ? null : attributes.getNamedItem("roles").getNodeValue(),
-	    			extractAttributes(entityNode)
-	    			);
+	    	final Node rolesNode = attributes.getNamedItem("roles");
+	    	final Node additionalFilterNode = attributes.getNamedItem("additionalFilter");
+	    	JpaEntity entity = JpaEntity.newBuilder()
+	    		.withClassName(attributes.getNamedItem("className").getNodeValue())
+	    		.withDisplayName(attributes.getNamedItem("displayName").getNodeValue())
+	    		.withRoles(rolesNode == null ? null : rolesNode.getNodeValue())
+	    		.withAttributes(extractAttributes(entityNode))
+	    		.withAdditionalFilter(additionalFilterNode == null ? null : additionalFilterNode.getNodeValue())
+	    		.build();
 	    	entities.add(entity);
 	    }
 	    return entities;

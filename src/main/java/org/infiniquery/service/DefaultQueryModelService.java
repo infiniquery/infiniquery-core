@@ -52,6 +52,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -569,6 +571,37 @@ public class DefaultQueryModelService implements QueryModelService {
         }
         executableQuery.setJpqlDimension(jpqlStatement.toString());
         executableQuery.setJpqlParams(queryParams);
+        compileAdditionalFilter(executableQuery, jpaEntity, queryParams);
+    }
+
+    /**
+     * To be called the last, after all other aspects of the ExecutableQuery have already been compiled.
+     * @param executableQuery
+     * @param jpaEntity
+     * @param queryParams
+     */
+    private void compileAdditionalFilter(ExecutableQuery executableQuery, JpaEntity jpaEntity, List<Object> queryParams) {
+    	final String inputFilter = jpaEntity.getAdditionalFilter();
+    	if(inputFilter != null && !inputFilter.isEmpty()) {
+	    	Pattern pattern = Pattern.compile("\\$\\{\\w*\\}");
+	        Matcher matcher = pattern.matcher(inputFilter);
+	        Map<String, ?> globalAttributes = securityService.getGlobalScopeAttributes();
+	        StringBuffer sb = new StringBuffer(" AND ");
+	        while(matcher.find()) {
+	            String group = matcher.group();
+	            String paramName = group.substring(2, group.length()-1);
+	            Object paramValue = globalAttributes.get(paramName);
+	            if(paramValue instanceof Iterable) {
+	            	throw new UnsupportedOperationException("Unsupported global attribute type: " + paramValue.getClass().getName() + 
+	            			" for attribute " + paramName + ". Iterable attributes are not supported in current version of infiniquery.");
+	            } else {
+	            	matcher.appendReplacement(sb, Matcher.quoteReplacement("?"));
+	            	queryParams.add(paramValue);
+	            }
+	        }
+	        matcher.appendTail(sb);
+	        executableQuery.setJpqlDimension(executableQuery.getJpqlDimension() + sb);
+    	}
     }
     
     /**

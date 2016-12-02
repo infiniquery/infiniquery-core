@@ -26,10 +26,8 @@
 
 package org.infiniquery.service;
 
-import org.infiniquery.Constants;
-
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -41,15 +39,22 @@ import java.util.Set;
  */
 public class DefaultSecurityService implements SecurityService {
 
-    final static Set<String> DEFAULT_ROLES_SET = Collections.unmodifiableSet(new HashSet<String>(0));
-
     /*
      * (non-Javadoc)
      * @see org.infiniquery.service.SecurityService#getCurrentUserRoles()
      */
     @Override
     public Set<String> getCurrentUserRoles() {
-        return DEFAULT_ROLES_SET;
+        return Collections.emptySet();
     }
+
+    /*
+     * (non-Javadoc)
+     * @see org.infiniquery.service.SecurityService#getGlobalScopeAttributes()
+     */
+	@Override
+	public Map<String, Object> getGlobalScopeAttributes() {
+		return Collections.emptyMap();
+	}
 
 }

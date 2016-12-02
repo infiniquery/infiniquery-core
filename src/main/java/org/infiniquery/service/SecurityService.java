@@ -26,6 +26,7 @@
 
 package org.infiniquery.service;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -40,5 +41,19 @@ public interface SecurityService {
      * @return a set of String objects representing the role(s) of the current user
      */
     Set<String> getCurrentUserRoles();
+
+    /**
+     * Provide the attributes to be accessed, in an expression language fashion,
+     * from the additional filter.
+     * Implementations of this method should not cache the returned values and 
+     * should be careful if returning mutable objects. In order to avoid 
+     * performance overhead, the caller code from infiniquery engine doesn't do 
+     * any immutable copies for avoiding concurrency issues (if you think there 
+     * is a risk in this sense, you need to provide caching in your custom 
+     * implementation of this method).
+     * 
+     * @return a map of attributes representing the global scope
+     */
+    Map<String, Object> getGlobalScopeAttributes();
 
 }
